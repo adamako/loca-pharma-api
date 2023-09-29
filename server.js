@@ -1,4 +1,8 @@
 const express = require("express");
+const axios = require("axios");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,8 +27,8 @@ app
       }
 
       // Make a request to the Google Maps API
-      const response = await fetch(fetchUrl);
-      const data = await response.json();
+      const response = await axios.get(fetchUrl);
+      const data = await response.data;
 
       // Set CORS headers to allow requests from your client-side application
       res.setHeader("Access-Control-Allow-Origin", "*");
@@ -47,11 +51,11 @@ app
   .get("/api/google-maps-details", async (req, res) => {
     try {
       // Make a request to the Google Maps API
-      const response = await fetch(
+      const response = await axios.get(
         `${apiURL}/place/details/json?place_id=${req.query.place_id}&key=${process.env.GOOGLE_MAPS_API_KEY}`,
       );
 
-      const data = await response.json();
+      const data = await response.data;
 
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
